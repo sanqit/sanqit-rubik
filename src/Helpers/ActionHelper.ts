@@ -1,7 +1,8 @@
 import * as THREE from "three";
-import TWEEN from "./tweenjs";
-import Cube from "./cubejs";
-import OP, { OPHelper } from "./OP";
+import TWEEN from "../tweenjs";
+import Cube from "../cubejs";
+import { OPHelper } from "./";
+import { op } from "../Enums";
 
 Cube.initSolver();
 
@@ -14,154 +15,154 @@ export default class ActionHelper {
     var operationToAxisMap: {
       [key: string]: THREE.Vector3;
     } = {};
-    operationToAxisMap[OP["F"]] = new THREE.Vector3(1, 0, 0);
-    operationToAxisMap[OP["Fw"]] = new THREE.Vector3(1, 0, 0);
-    operationToAxisMap[OP["F'"]] = new THREE.Vector3(-1, 0, 0);
-    operationToAxisMap[OP["Fw'"]] = new THREE.Vector3(-1, 0, 0);
+    operationToAxisMap[op["F"]] = new THREE.Vector3(1, 0, 0);
+    operationToAxisMap[op["Fw"]] = new THREE.Vector3(1, 0, 0);
+    operationToAxisMap[op["F'"]] = new THREE.Vector3(-1, 0, 0);
+    operationToAxisMap[op["Fw'"]] = new THREE.Vector3(-1, 0, 0);
 
-    operationToAxisMap[OP["S"]] = new THREE.Vector3(1, 0, 0);
-    operationToAxisMap[OP["S'"]] = new THREE.Vector3(-1, 0, 0);
+    operationToAxisMap[op["S"]] = new THREE.Vector3(1, 0, 0);
+    operationToAxisMap[op["S'"]] = new THREE.Vector3(-1, 0, 0);
 
-    operationToAxisMap[OP["B"]] = new THREE.Vector3(-1, 0, 0);
-    operationToAxisMap[OP["Bw"]] = new THREE.Vector3(-1, 0, 0);
-    operationToAxisMap[OP["B'"]] = new THREE.Vector3(1, 0, 0);
-    operationToAxisMap[OP["Bw'"]] = new THREE.Vector3(1, 0, 0);
+    operationToAxisMap[op["B"]] = new THREE.Vector3(-1, 0, 0);
+    operationToAxisMap[op["Bw"]] = new THREE.Vector3(-1, 0, 0);
+    operationToAxisMap[op["B'"]] = new THREE.Vector3(1, 0, 0);
+    operationToAxisMap[op["Bw'"]] = new THREE.Vector3(1, 0, 0);
 
-    operationToAxisMap[OP["L"]] = new THREE.Vector3(0, 0, 1);
-    operationToAxisMap[OP["Lw"]] = new THREE.Vector3(0, 0, 1);
-    operationToAxisMap[OP["L'"]] = new THREE.Vector3(0, 0, -1);
-    operationToAxisMap[OP["Lw'"]] = new THREE.Vector3(0, 0, -1);
+    operationToAxisMap[op["L"]] = new THREE.Vector3(0, 0, 1);
+    operationToAxisMap[op["Lw"]] = new THREE.Vector3(0, 0, 1);
+    operationToAxisMap[op["L'"]] = new THREE.Vector3(0, 0, -1);
+    operationToAxisMap[op["Lw'"]] = new THREE.Vector3(0, 0, -1);
 
-    operationToAxisMap[OP["M"]] = new THREE.Vector3(0, 0, 1);
-    operationToAxisMap[OP["M'"]] = new THREE.Vector3(0, 0, -1);
+    operationToAxisMap[op["M"]] = new THREE.Vector3(0, 0, 1);
+    operationToAxisMap[op["M'"]] = new THREE.Vector3(0, 0, -1);
 
-    operationToAxisMap[OP["R"]] = new THREE.Vector3(0, 0, -1);
-    operationToAxisMap[OP["Rw"]] = new THREE.Vector3(0, 0, -1);
-    operationToAxisMap[OP["R'"]] = new THREE.Vector3(0, 0, 1);
-    operationToAxisMap[OP["Rw'"]] = new THREE.Vector3(0, 0, 1);
+    operationToAxisMap[op["R"]] = new THREE.Vector3(0, 0, -1);
+    operationToAxisMap[op["Rw"]] = new THREE.Vector3(0, 0, -1);
+    operationToAxisMap[op["R'"]] = new THREE.Vector3(0, 0, 1);
+    operationToAxisMap[op["Rw'"]] = new THREE.Vector3(0, 0, 1);
 
-    operationToAxisMap[OP["U"]] = new THREE.Vector3(0, -1, 0);
-    operationToAxisMap[OP["Uw"]] = new THREE.Vector3(0, -1, 0);
-    operationToAxisMap[OP["U'"]] = new THREE.Vector3(0, 1, 0);
-    operationToAxisMap[OP["Uw'"]] = new THREE.Vector3(0, 1, 0);
+    operationToAxisMap[op["U"]] = new THREE.Vector3(0, -1, 0);
+    operationToAxisMap[op["Uw"]] = new THREE.Vector3(0, -1, 0);
+    operationToAxisMap[op["U'"]] = new THREE.Vector3(0, 1, 0);
+    operationToAxisMap[op["Uw'"]] = new THREE.Vector3(0, 1, 0);
 
-    operationToAxisMap[OP["E"]] = new THREE.Vector3(0, 1, 0);
-    operationToAxisMap[OP["E'"]] = new THREE.Vector3(0, -1, 0);
+    operationToAxisMap[op["E"]] = new THREE.Vector3(0, 1, 0);
+    operationToAxisMap[op["E'"]] = new THREE.Vector3(0, -1, 0);
 
-    operationToAxisMap[OP["D"]] = new THREE.Vector3(0, 1, 0);
-    operationToAxisMap[OP["Dw"]] = new THREE.Vector3(0, 1, 0);
-    operationToAxisMap[OP["D'"]] = new THREE.Vector3(0, -1, 0);
-    operationToAxisMap[OP["Dw'"]] = new THREE.Vector3(0, -1, 0);
+    operationToAxisMap[op["D"]] = new THREE.Vector3(0, 1, 0);
+    operationToAxisMap[op["Dw"]] = new THREE.Vector3(0, 1, 0);
+    operationToAxisMap[op["D'"]] = new THREE.Vector3(0, -1, 0);
+    operationToAxisMap[op["Dw'"]] = new THREE.Vector3(0, -1, 0);
 
-    operationToAxisMap[OP["x"]] = new THREE.Vector3(0, 0, -1);
-    operationToAxisMap[OP["x'"]] = new THREE.Vector3(0, 0, 1);
+    operationToAxisMap[op["x"]] = new THREE.Vector3(0, 0, -1);
+    operationToAxisMap[op["x'"]] = new THREE.Vector3(0, 0, 1);
 
-    operationToAxisMap[OP["y"]] = new THREE.Vector3(0, -1, 0);
-    operationToAxisMap[OP["y'"]] = new THREE.Vector3(0, 1, 0);
+    operationToAxisMap[op["y"]] = new THREE.Vector3(0, -1, 0);
+    operationToAxisMap[op["y'"]] = new THREE.Vector3(0, 1, 0);
 
-    operationToAxisMap[OP["z"]] = new THREE.Vector3(1, 0, 0);
-    operationToAxisMap[OP["z'"]] = new THREE.Vector3(-1, 0, 0);
+    operationToAxisMap[op["z"]] = new THREE.Vector3(1, 0, 0);
+    operationToAxisMap[op["z'"]] = new THREE.Vector3(-1, 0, 0);
 
     return operationToAxisMap;
   }
 
-  static groupAndSwap(cubes: THREE.Mesh[], scene: THREE.Scene, op: OP) {
+  static groupAndSwap(cubes: THREE.Mesh[], scene: THREE.Scene, operation: op) {
     var group = new THREE.Object3D();
 
     var repeat = [
-      OP["F'"],
-      OP["Fw'"],
-      OP["S'"],
-      OP["B"],
-      OP["Bw"],
-      OP["L'"],
-      OP["Lw'"],
-      OP["M'"],
-      OP["R"],
-      OP["Rw"],
-      OP["U"],
-      OP["Uw"],
-      OP["E'"],
-      OP["D'"],
-      OP["Dw'"],
-      OP["x"],
-      OP["y"],
-      OP["z'"]
-    ].some(x => x === op)
+      op["F'"],
+      op["Fw'"],
+      op["S'"],
+      op["B"],
+      op["Bw"],
+      op["L'"],
+      op["Lw'"],
+      op["M'"],
+      op["R"],
+      op["Rw"],
+      op["U"],
+      op["Uw"],
+      op["E'"],
+      op["D'"],
+      op["Dw'"],
+      op["x"],
+      op["y"],
+      op["z'"]
+    ].some(x => x === operation)
       ? 3
       : 1;
     for (var i = 0; i < repeat; i++) {
-      switch (op) {
-        case OP["F"]:
-        case OP["F'"]:
+      switch (operation) {
+        case op["F"]:
+        case op["F'"]:
           group = this.rotateZ(cubes, scene, [1]);
           break;
-        case OP["Fw"]:
-        case OP["Fw'"]:
+        case op["Fw"]:
+        case op["Fw'"]:
           group = this.rotateZ(cubes, scene, [1, 1]);
           break;
-        case OP["S"]:
-        case OP["S'"]:
+        case op["S"]:
+        case op["S'"]:
           group = this.rotateZ(cubes, scene, [0, 1]);
           break;
-        case OP["B"]:
-        case OP["B'"]:
+        case op["B"]:
+        case op["B'"]:
           group = this.rotateZ(cubes, scene, [0, 0, 1]);
           break;
-        case OP["Bw"]:
-        case OP["Bw'"]:
+        case op["Bw"]:
+        case op["Bw'"]:
           group = this.rotateZ(cubes, scene, [0, 1, 1]);
           break;
-        case OP["L"]:
-        case OP["L'"]:
+        case op["L"]:
+        case op["L'"]:
           group = this.rotateX(cubes, scene, [1]);
           break;
-        case OP["Lw"]:
-        case OP["Lw'"]:
+        case op["Lw"]:
+        case op["Lw'"]:
           group = this.rotateX(cubes, scene, [1, 1]);
           break;
-        case OP["M"]:
-        case OP["M'"]:
+        case op["M"]:
+        case op["M'"]:
           group = this.rotateX(cubes, scene, [0, 1]);
           break;
-        case OP["R"]:
-        case OP["R'"]:
+        case op["R"]:
+        case op["R'"]:
           group = this.rotateX(cubes, scene, [0, 0, 1]);
           break;
-        case OP["Rw"]:
-        case OP["Rw'"]:
+        case op["Rw"]:
+        case op["Rw'"]:
           group = this.rotateX(cubes, scene, [0, 1, 1]);
           break;
-        case OP["U"]:
-        case OP["U'"]:
+        case op["U"]:
+        case op["U'"]:
           group = this.rotateY(cubes, scene, [0, 0, 1]);
           break;
-        case OP["Uw"]:
-        case OP["Uw'"]:
+        case op["Uw"]:
+        case op["Uw'"]:
           group = this.rotateY(cubes, scene, [0, 1, 1]);
           break;
-        case OP["E"]:
-        case OP["E'"]:
+        case op["E"]:
+        case op["E'"]:
           group = this.rotateY(cubes, scene, [0, 1]);
           break;
-        case OP["D"]:
-        case OP["D'"]:
+        case op["D"]:
+        case op["D'"]:
           group = this.rotateY(cubes, scene, [1]);
           break;
-        case OP["Dw"]:
-        case OP["Dw'"]:
+        case op["Dw"]:
+        case op["Dw'"]:
           group = this.rotateY(cubes, scene, [1, 1]);
           break;
-        case OP["x"]:
-        case OP["x'"]:
+        case op["x"]:
+        case op["x'"]:
           group = this.rotateX(cubes, scene, [1, 1, 1]);
           break;
-        case OP["y"]:
-        case OP["y'"]:
+        case op["y"]:
+        case op["y'"]:
           group = this.rotateY(cubes, scene, [1, 1, 1]);
           break;
-        case OP["z"]:
-        case OP["z'"]:
+        case op["z"]:
+        case op["z'"]:
           group = this.rotateZ(cubes, scene, [1, 1, 1]);
           break;
       }
@@ -319,12 +320,18 @@ export default class ActionHelper {
     return tween;
   }
 
+  static reset() {
+    if (this.locked) return false;
+    this.solvers = [new Cube()];
+    return true;
+  }
+
   private static solvers = [new Cube()];
   private static locked = false;
   static action(
     cubes: THREE.Mesh[],
     scene: THREE.Scene,
-    op: OP,
+    op: op,
     done?: Function
   ) {
     if (this.locked) return;

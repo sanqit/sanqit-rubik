@@ -1,9 +1,9 @@
 import * as THREE from "three";
 
 export default class CubeHelper {
-  static createCubes = (scene: THREE.Scene) => {
+  static createCubes = () => {
     var cubes = [];
-    var cubesEdges = [];
+
     for (var x = 0; x < 3; x++) {
       for (var y = 0; y < 3; y++) {
         for (var z = 0; z < 3; z++) {
@@ -36,8 +36,6 @@ export default class CubeHelper {
         }
       }
     }
-
-    cubes.forEach(cube => scene.add(cube));
 
     return cubes;
   };

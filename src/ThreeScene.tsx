@@ -4,18 +4,15 @@ import OrbitControls from "three-orbitcontrols";
 import Stats from "stats.js";
 import SceneHelper from "./SceneHelper";
 import TWEEN from "./tweenjs";
-import ActionHelper from "./ActionHelper";
-import CubeHelper from "./CubeHelper";
-import OP, { OPHelper } from "./OP";
+import { CubeHelper, ActionHelper, OPHelper } from "./Helpers";
+import KeyHandler from "./KeyHandler";
 
 interface ThreeSceneProps {
   width: number | string;
   height: number | string;
 }
 
-interface ThreeSceneState {
-  cubePositions: any[];
-}
+interface ThreeSceneState {}
 
 class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
   container: HTMLDivElement;
@@ -24,7 +21,6 @@ class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer;
   clock: THREE.Clock;
-  cube: THREE.Mesh;
   frameId: number;
   stats: Stats;
   controls: OrbitControls;
@@ -37,9 +33,7 @@ class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
   cubes: THREE.Mesh[] = [];
   constructor(props: ThreeSceneProps) {
     super(props);
-    this.state = {
-      cubePositions: []
-    };
+    this.state = {};
   }
 
   private initMainScene() {
@@ -84,47 +78,12 @@ class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
     controls.enablePan = false;
     controls.enableZoom = false;
 
-    var cubes = (this.cubes = CubeHelper.createCubes(scene));
+    var cubes = (this.cubes = CubeHelper.createCubes());
+    cubes.forEach((cube: THREE.Mesh) => scene.add(cube));
     this.start();
     this.addStats();
 
-    var map = {
-      "70": OP["F"],
-      "102": OP["F'"],
-      "83": OP["S"],
-      "115": OP["S'"],
-      "66": OP["B"],
-      "98": OP["B'"],
-
-      "76": OP["L"],
-      "108": OP["L'"],
-      "77": OP["M"],
-      "109": OP["M'"],
-      "82": OP["R"],
-      "114": OP["R'"],
-
-      "85": OP["U"],
-      "117": OP["U'"],
-      "69": OP["E"],
-      "101": OP["E'"],
-      "68": OP["D"],
-      "100": OP["D'"],
-
-      "88": OP["x"],
-      "120": OP["x'"],
-      "89": OP["y"],
-      "121": OP["y'"],
-      "90": OP["z"],
-      "122": OP["z'"]
-    };
-
-    window.onkeypress = e => {
-      if (e.target && e.target.tagName === "INPUT") return;
-      var ops = map[e.keyCode];
-      if (ops) {
-        this.tween = ActionHelper.action(cubes, scene, map[e.keyCode]);
-      }
-    };
+    KeyHandler.addControls(cubes, scene, tween => (this.tween = tween));
   }
 
   private initAdditionaScene() {
@@ -211,11 +170,9 @@ class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
                 <button
                   key={ops}
                   onClick={() =>
-                    (this.tween = ActionHelper.action(
-                      this.cubes,
-                      this.scene,
-                      ops
-                    ))
+                    (this.tween =
+                      ActionHelper.action(this.cubes, this.scene, ops) ||
+                      this.tween)
                   }
                 >
                   {ops}
@@ -227,11 +184,9 @@ class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
                 <button
                   key={ops}
                   onClick={() =>
-                    (this.tween = ActionHelper.action(
-                      this.cubes,
-                      this.scene,
-                      ops
-                    ))
+                    (this.tween =
+                      ActionHelper.action(this.cubes, this.scene, ops) ||
+                      this.tween)
                   }
                 >
                   {ops}
@@ -240,15 +195,28 @@ class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
             </div>
             <div>
               <button
+                onClick={() => {
+                  if (ActionHelper.reset()) {
+                    this.cubes.forEach(cube => this.scene.remove(cube));
+                    this.cubes = CubeHelper.createCubes();
+                    this.cubes.forEach(cube => this.scene.add(cube));
+                  }
+                }}
+              >
+                reset
+              </button>
+              <button
                 onClick={() =>
-                  (this.tween = ActionHelper.shuffle(this.cubes, this.scene))
+                  (this.tween =
+                    ActionHelper.shuffle(this.cubes, this.scene) || this.tween)
                 }
               >
                 shuffle
               </button>
               <button
                 onClick={() =>
-                  (this.tween = ActionHelper.solve(this.cubes, this.scene))
+                  (this.tween =
+                    ActionHelper.solve(this.cubes, this.scene) || this.tween)
                 }
               >
                 solve
@@ -262,21 +230,20 @@ class ThreeScene extends React.Component<ThreeSceneProps, ThreeSceneState> {
               onKeyUp={e => {
                 if (e.keyCode === 13) {
                   var command = this.refs.input.value;
-                  this.tween = ActionHelper.runCommand(
-                    this.cubes,
-                    this.scene,
-                    command
-                  );
+                  this.tween =
+                    ActionHelper.runCommand(this.cubes, this.scene, command) ||
+                    this.tween;
                 }
               }}
             />
             <button
               onClick={() =>
-                (this.tween = ActionHelper.runCommand(
-                  this.cubes,
-                  this.scene,
-                  this.refs.input.value
-                ))
+                (this.tween =
+                  ActionHelper.runCommand(
+                    this.cubes,
+                    this.scene,
+                    this.refs.input.value
+                  ) || this.tween)
               }
             >
               >

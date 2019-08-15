@@ -13,9 +13,11 @@ class SceneHelper {
   static createControls = (camera: THREE.Camera, renderer: THREE.Renderer) => {
     const controls = new OrbitControls(camera, renderer.domElement);
     //const controls = new TrackballControls(camera, renderer.domElement);
-    //controls.enableDamping = true
-    //controls.dampingFactor = 0.25
-    controls.enableZoom = true;
+    //controls.enableDamping = true;
+    //controls.dampingFactor = 0.25;
+    //controls.rotateSpeed = 0.7;
+    //controls.enableZoom = true;
+
     controls.target.set(0, 5, 0);
     controls.update();
     return controls;

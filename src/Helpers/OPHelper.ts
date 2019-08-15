@@ -1,95 +1,57 @@
-enum OP {
-  "F" = "F",
-  "Fw" = "Fw",
-  "L" = "L",
-  "Lw" = "Lw",
-  "B" = "B",
-  "Bw" = "Bw",
-  "R" = "R",
-  "Rw" = "Rw",
-  "U" = "U",
-  "Uw" = "Uw",
-  "D" = "D",
-  "Dw" = "Dw",
-  "M" = "M",
-  "S" = "S",
-  "E" = "E",
-  "x" = "x",
-  "y" = "y",
-  "z" = "z",
-
-  "F'" = "F'",
-  "Fw'" = "Fw'",
-  "L'" = "L'",
-  "Lw'" = "Lw'",
-  "B'" = "B'",
-  "Bw'" = "Bw'",
-  "R'" = "R'",
-  "Rw'" = "Rw'",
-  "U'" = "U'",
-  "Uw'" = "Uw'",
-  "D'" = "D'",
-  "Dw'" = "Dw'",
-  "M'" = "M'",
-  "S'" = "S'",
-  "E'" = "E'",
-  "x'" = "x'",
-  "y'" = "y'",
-  "z'" = "z'"
-}
-export class OPHelper {
-  static getDirectOPS(): OP[] {
+import { op } from "../Enums";
+export default class OPHelper {
+  static getDirectOPS(): op[] {
     return [
-      OP["F"],
-      OP["Fw"],
-      OP["L"],
-      OP["Lw"],
-      OP["B"],
-      OP["Bw"],
-      OP["R"],
-      OP["Rw"],
-      OP["U"],
-      OP["Uw"],
-      OP["D"],
-      OP["Dw"],
-      OP["M"],
-      OP["S"],
-      OP["E"],
-      OP["x"],
-      OP["y"],
-      OP["z"]
+      op["F"],
+      op["Fw"],
+      op["L"],
+      op["Lw"],
+      op["B"],
+      op["Bw"],
+      op["R"],
+      op["Rw"],
+      op["U"],
+      op["Uw"],
+      op["D"],
+      op["Dw"],
+      op["M"],
+      op["S"],
+      op["E"],
+      op["x"],
+      op["y"],
+      op["z"]
     ];
   }
 
-  static getReverseOPS(): OP[] {
+  static getReverseOPS(): op[] {
     return [
-      OP["F'"],
-      OP["Fw'"],
-      OP["L'"],
-      OP["Lw'"],
-      OP["B'"],
-      OP["Bw'"],
-      OP["R'"],
-      OP["Rw'"],
-      OP["U'"],
-      OP["Uw'"],
-      OP["D'"],
-      OP["Dw'"],
-      OP["M'"],
-      OP["S'"],
-      OP["E'"],
-      OP["x'"],
-      OP["y'"],
-      OP["z'"]
+      op["F'"],
+      op["Fw'"],
+      op["L'"],
+      op["Lw'"],
+      op["B'"],
+      op["Bw'"],
+      op["R'"],
+      op["Rw'"],
+      op["U'"],
+      op["Uw'"],
+      op["D'"],
+      op["Dw'"],
+      op["M'"],
+      op["S'"],
+      op["E'"],
+      op["x'"],
+      op["y'"],
+      op["z'"]
     ];
   }
 
   static generateRandomCommand(steps: number = 20) {
-    var randomOperations: OP[] = [];
+    var randomOperations: op[] = [];
     for (var i = 0; i < steps; i++) {
       var rand = Math.random();
       var randomOperation = OPHelper.parseOP(
-        Math.floor(rand * Object.keys(OP).length)
+        Math.floor(rand * Object.keys(op).length)
       );
       randomOperations.push(randomOperation);
     }
@@ -97,14 +59,14 @@ export class OPHelper {
     return randomOperations;
   }
 
-  static parseOP(op: number | string): OP {
-    if (typeof op === "string") {
-      var parsed = OP[op];
+  static parseOP(val: number | string): op {
+    if (typeof val === "string") {
+      var parsed = op[val];
 
       if (parsed == null) {
-        for (var key of Object.keys(OP)) {
-          if (OP[key] === op) {
-            parsed = OP[key];
+        for (var key of Object.keys(op)) {
+          if (op[key] === val) {
+            parsed = op[key];
             break;
           }
         }
@@ -113,7 +75,7 @@ export class OPHelper {
       return parsed;
     }
 
-    return OP[Object.keys(OP)[op]];
+    return op[Object.keys(op)[val]];
   }
 
   static parseCommand(command: string) {
@@ -147,7 +109,7 @@ export class OPHelper {
       .replace("Dw", "D E");
 
     var split = command.split(" ");
-    var ops: OP[] = [];
+    var ops: op[] = [];
     split.map(x => {
       x = x.replace("(", "").replace(")", "");
       if (x.endsWith("2")) {
@@ -169,5 +131,3 @@ export class OPHelper {
     return ops;
   }
 }
-
-export default OP;
