@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import TWEEN from "../tweenjs";
-import Cube from "../cubejs";
+import TWEEN from "../tweenjsWrapper";
+import Cube from "../cubejsWrapper";
 import { OPHelper } from "./";
 import { op } from "../Enums";
 

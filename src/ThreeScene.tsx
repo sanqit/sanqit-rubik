@@ -3,7 +3,7 @@ import * as THREE from "three";
 import OrbitControls from "three-orbitcontrols";
 import Stats from "stats.js";
 import SceneHelper from "./SceneHelper";
-import TWEEN from "./tweenjs";
+import TWEEN from "./tweenjsWrapper";
 import { CubeHelper, ActionHelper, OPHelper } from "./Helpers";
 import KeyHandler from "./KeyHandler";
 
